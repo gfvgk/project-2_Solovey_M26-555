@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-from primitive_db.engine import welcome
+"""Точка входа в приложение."""
+
+from primitive_db.engine import run
 
 
 def main():
-    welcome()
+    """Запускает базу данных."""
+    run()
 
 
 if __name__ == "__main__":
