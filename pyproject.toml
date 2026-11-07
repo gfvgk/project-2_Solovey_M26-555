@@ -1,13 +1,15 @@
 [project]
 name = "primitive-db"
-version = "0.1.0"
+version = "0.1.1"
 description = "Primitive console database"
 readme = "README.md"
 authors = [
     { name = "Nikolay Solovey", email = "soloveynikolay2004@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "prompt>=0.4.1",
+]
 
 [project.scripts]
 project = "primitive_db.main:main"
