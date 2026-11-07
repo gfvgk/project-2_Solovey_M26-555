@@ -14,6 +14,7 @@ from primitive_db.core import (
     table_info,
     update,
 )
+from primitive_db.decorators import handle_db_errors
 from primitive_db.parser import parse_set, parse_values, parse_where, tokenize
 from primitive_db.utils import (
     delete_table_data,
@@ -56,11 +57,6 @@ def print_help():
     print("\nОбщие команды:")
     print("<command> exit - выход из программы")
     print("<command> help - справочная информация\n")
-
-
-def print_invalid_value(value):
-    """Выводит сообщение о некорректном значении."""
-    print(f"Некорректное значение: {value}. Попробуйте снова.")
 
 
 def print_tables(metadata):
@@ -180,7 +176,7 @@ def handle_info(metadata, params):
         raise ValueError(" ".join(params) or "info")
     table_info(metadata, params[0], load_table_data(params[0]))
 
-
+@handle_db_errors
 def process_command(metadata, user_input):
     """Выполняет одну команду. Возвращает False, если нужно выйти."""
     tokens = tokenize(user_input)
@@ -225,15 +221,6 @@ def run():
         except (EOFError, KeyboardInterrupt):
             break
 
-        try:
-            should_continue = process_command(metadata, user_input)
-        except KeyError as error:
-            print(f'Ошибка: Таблица "{error.args[0]}" не существует.')
-            should_continue = True
-        except ValueError as error:
-            print_invalid_value(error)
-            should_continue = True
-
-        if not should_continue:
+        if process_command(metadata, user_input) is False:
             break
         print()
