@@ -22,3 +22,4 @@ QUOTE_CHARS = "\"'"
 PUNCTUATION_CHARS = "=,()"
 
 PROMPT_TEXT = ">>>Введите команду: "
+CONFIRM_ANSWER = "y"
