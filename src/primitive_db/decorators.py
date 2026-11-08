@@ -32,9 +32,7 @@ def confirm_action(action_name):
 
     def decorator(func):
         def wrapper(*args, **kwargs):
-            answer = input(
-                f'Вы уверены, что хотите выполнить "{action_name}"? [y/n]: '
-            )
+            answer = input(f'Вы уверены, что хотите выполнить "{action_name}"? [y/n]: ')
             if answer.strip().lower() != CONFIRM_ANSWER:
                 print("Операция отменена.")
                 return None
