@@ -1,31 +1,59 @@
 # Primitive DB
 
-Консольная имитация базы данных на Python. Таблицы и данные хранятся в JSON-файлах.
+Консольное приложение, имитирующее работу с базой данных. Поддерживает создание и удаление таблиц, CRUD-операции с записями, фильтрацию по условиям, подтверждение опасных действий и кэширование запросов. Таблицы и данные хранятся в JSON-файлах.
+
+## Демонстрация
+
+[![asciicast](https://asciinema.org/a/c0byIoAmvzFuFBeU.svg)](https://asciinema.org/a/c0byIoAmvzFuFBeU)
+
+## Требования
+
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/)
+- make (необязательно, все команды можно выполнить через uv напрямую)
 
 ## Установка
 
 ```bash
-uv sync
-```
-
-Установка как отдельной команды:
-
-```bash
-uv build
-uv tool install dist/primitive_db-<версия>-py3-none-any.whl
+git clone https://github.com/gfvgk/project-2_Solovey_M26-555.git
+cd project-2_Solovey_M26-555
+make install        # или: uv sync
 ```
 
 ## Запуск
 
 ```bash
-uv run database
+make run            # или: uv run database
 ```
 
-или, после установки пакета:
+## Установка как отдельной команды
 
 ```bash
+make build            # или: uv build
+make package-install  # или: uv tool install dist/<файл>.whl
 database
 ```
+
+## Проверка кода
+
+```bash
+make lint           # или: uv run ruff check .
+```
+
+## Структура проекта
+
+```
+src/primitive_db/
+├── main.py        # точка входа
+├── engine.py      # основной цикл, разбор ввода, вызов команд
+├── core.py        # логика таблиц и CRUD-операций
+├── parser.py      # разбор values, where и set
+├── utils.py       # загрузка и сохранение JSON-файлов
+├── decorators.py  # декораторы и кэширование
+└── constants.py   # константы
+```
+
+Метаданные таблиц хранятся в `db_meta.json`, данные каждой таблицы — в `data/<имя_таблицы>.json`.
 
 ## Управление таблицами
 
@@ -66,15 +94,15 @@ database
 Строковые значения пишутся в кавычках, логические — `true` / `false`. `ID` генерируется автоматически.
 В `set` можно перечислить несколько столбцов через запятую, в `where` — несколько условий через `and`.
 
-Данные каждой таблицы хранятся в отдельном файле `data/<имя_таблицы>.json`.
-
 Пример:
 
 ```
 >>>Введите команду: insert into users values ("Sergei", 28, true)
 Запись с ID=1 успешно добавлена в таблицу "users".
+Функция insert выполнилась за 0.000 секунд.
 
 >>>Введите команду: select from users where age = 28
+Функция select выполнилась за 0.000 секунд.
 +----+--------+-----+-----------+
 | ID |  name  | age | is_active |
 +----+--------+-----+-----------+
@@ -85,6 +113,7 @@ database
 Запись с ID=1 в таблице "users" успешно обновлена.
 
 >>>Введите команду: delete from users where ID = 1
+Вы уверены, что хотите выполнить "удаление записи"? [y/n]: y
 Запись с ID=1 успешно удалена из таблицы "users".
 
 >>>Введите команду: info users
