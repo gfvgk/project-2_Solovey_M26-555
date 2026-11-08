@@ -176,6 +176,7 @@ def handle_info(metadata, params):
         raise ValueError(" ".join(params) or "info")
     table_info(metadata, params[0], load_table_data(params[0]))
 
+
 @handle_db_errors
 def process_command(metadata, user_input):
     """Выполняет одну команду. Возвращает False, если нужно выйти."""

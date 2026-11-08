@@ -24,9 +24,7 @@ def create_table(metadata, table_name, columns):
     for column in columns:
         name, _, column_type = column.partition(":")
         is_valid = (
-            name.isidentifier()
-            and column_type in VALID_TYPES
-            and name not in schema
+            name.isidentifier() and column_type in VALID_TYPES and name not in schema
         )
         if not is_valid:
             raise ValueError(column)
